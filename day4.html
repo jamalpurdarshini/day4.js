@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Employee Bonus Calculator</title>
+  </head>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 25px;
+      font-size: 28px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      margin-bottom: 30px;
+    }
+
+    button:hover {
+      background-color: #43a047;
+      transform: scale(1.05);
+    }
+
+    #output {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .employee {
+      background: #f9f9f9;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      border-left: 5px solid #4caf50;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .employee:hover {
+      transform: translateX(5px);
+    }
+
+    strong {
+      font-size: 20px;
+      color: #2e7d32;
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <h1>Employee Bonus Calculator</h1>
+      <button id="calculateBtn">Calculate Bonuses</button>
+      <div id="output"></div>
+    </div>
+
+    <script>
+      // Employee data
+      const employees = [
+        { name: "Alice", salary: 50000 },
+        { name: "Bob", salary: 40000 },
+        { name: "Charlie", salary: 60000 },
+      ];
+
+      // Bonus calculation function
+      function calculateBonus(percent) {
+        return this.salary * (percent / 100);
+      }
+
+      // Button click event
+      document.getElementById("calculateBtn").addEventListener("click", () => {
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = ""; // Clear previous output
+
+        // Filter eligible employees
+        const eligibleEmployees = employees.filter(
+          ({ salary }) => salary > 45000
+        );
+
+        // Map employees with bonus
+        const employeesWithBonus = eligibleEmployees.map((employee) => {
+          const bonus = calculateBonus.call(employee, 10); // Using call
+          return { ...employee, bonus };
+        });
+
+        // Display each employee
+        employeesWithBonus.forEach(({ name, salary, bonus }) => {
+          const employeeDiv = document.createElement("div");
+          employeeDiv.className = "employee";
+          employeeDiv.innerHTML = `${name} earns ₹${salary} and got a bonus of ₹${bonus}`;
+          outputDiv.appendChild(employeeDiv);
+        });
+
+        // Calculate total bonus
+        const totalBonus = employeesWithBonus.reduce(
+          (acc, { bonus }) => acc + bonus,
+          0
+        );
+
+        // Display total bonus
+        const totalDiv = document.createElement("div");
+        totalDiv.style.marginTop = "20px";
+        totalDiv.innerHTML = `<strong>Total Bonus Given: ₹${totalBonus}</strong>`;
+        outputDiv.appendChild(totalDiv);
+      });
+    </script>
+  </body>
+</html>
